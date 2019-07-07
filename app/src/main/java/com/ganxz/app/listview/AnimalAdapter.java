@@ -17,6 +17,7 @@ import java.util.List;
 public class AnimalAdapter extends ArrayAdapter<AnimalVo> {
     private int resource;
 
+    private final int VIEW_HOLDER_TAG = 1;
     public AnimalAdapter(Context context, int resource, List<AnimalVo> objects) {
         super(context, resource, objects);
         this.resource = resource;
@@ -26,11 +27,28 @@ public class AnimalAdapter extends ArrayAdapter<AnimalVo> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // return super.getView(position, convertView, parent);
         AnimalVo animalVo = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(this.resource, parent, false);
-        ImageView imageView = (ImageView) view.findViewById(R.id.complex_item_image_view);
-        TextView textView =(TextView) view.findViewById(R.id.complex_item_text_view);
-        imageView.setImageResource(animalVo.getIconId());
-        textView.setText(animalVo.getName());
+        View view ;
+        ViewHolder viewHolder;
+        if(convertView == null){
+            view = LayoutInflater.from(getContext()).inflate(this.resource, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.complex_item_image_view);
+            viewHolder.textView =(TextView) view.findViewById(R.id.complex_item_text_view);
+
+            view.setTag( viewHolder);
+        } else {
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
+        }
+
+        viewHolder.imageView.setImageResource(animalVo.getIconId());
+        viewHolder.textView.setText(animalVo.getName());
+
         return view;
+    }
+
+    class ViewHolder{
+        ImageView imageView;
+        TextView textView;
     }
 }

@@ -3,16 +3,23 @@ package com.ganxz.app.listview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ganxz.app.R;
+import com.ganxz.app.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ListViewDemo extends AppCompatActivity {
+
+    private static final String TAG = "ListViewDemo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +30,11 @@ public class ListViewDemo extends AppCompatActivity {
 
         // 复杂ListView
         complexListView();
+
     }
 
     private void simpleListView() {
-        List<String> data2 = new ArrayList<String>();
+        final List<String> data2 = new ArrayList<String>();
         for (int i = 0; i < 20; i++) {
             data2.add("item" + i);
         }
@@ -34,6 +42,14 @@ public class ListViewDemo extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ListViewDemo.this, R.layout.support_simple_spinner_dropdown_item, data2);
         ListView listView = (ListView) findViewById(R.id.simple_list_view);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "onItemClick: "+i+","+l);
+                // Toast.makeText(ListViewDemo.this, "你点了："+ data2.get(i), Toast.LENGTH_SHORT).show();
+                ToastUtils.show(ListViewDemo.this, "你点了："+ data2.get(i));
+            }
+        });
     }
 
     private void complexListView() {
